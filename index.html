@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Student Profiles</title>
+  <style>
+    /* Reset */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #222;
+      color: #fff;
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+    }
+
+    .container {
+      width: 100%;
+      max-width: 375px;
+      margin: auto;
+      background-color: #222;
+      border-radius: 25px;
+      overflow: hidden;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .header {
+      padding: 20px;
+      background-color: #333;
+      text-align: center;
+    }
+
+    .header h1, .header h2, .header p {
+      margin: 5px 0;
+    }
+
+    .header h1 {
+      font-size: 20px;
+      font-weight: bold;
+    }
+
+    .header h2 {
+      font-size: 18px;
+      color: #ff0;
+    }
+
+    .header p {
+      font-size: 14px;
+      color: #aaa;
+    }
+
+    .main-content {
+      padding: 20px;
+      overflow-y: auto;
+      flex: 1;
+    }
+
+    .profile-container {
+      margin-bottom: 15px;
+      border-radius: 15px;
+      background-color: #333;
+      padding: 15px;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+    }
+
+    .profile-container h3 {
+      margin: 0;
+      font-size: 18px;
+      font-weight: bold;
+    }
+
+    .profile-container p {
+      margin: 5px 0;
+      font-size: 14px;
+    }
+
+    .profile-container a {
+      color: #ff0;
+      text-decoration: none;
+    }
+
+    .profile-container a:hover {
+      color: #d1a100;
+    }
+
+    .footer {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 10px 0;
+      background-color: #111;
+      border-top: 2px solid #333;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <!-- Header -->
+    <div class="header">
+      <h1>Dept. of EEE</h1>
+      <h2>Student Profiles</h2>
+      <p id="date-time"></p>
+    </div>
+
+    <!-- Main Content -->
+    <div class="main-content" id="profiles"></div>
+
+    <!-- Footer -->
+    <div class="footer">
+      <p>Maintaining by CR</p>
+    </div>
+  </div>
+
+  <script>
+    // URL of the Google Sheet in TSV format
+    const sheetUrl = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vQBQx8ya4m7Xa4nTDx4cdB_OLGuMyCGhwH4bNlVHQwfk30SY-dfolEMD_ei0pq-l227luK5-jxUWG59/pub?output=tsv';
+    const profilesDiv = document.getElementById('profiles');
+
+    // Update date and time
+    function updateDateTime() {
+      const now = new Date();
+      const time = now.toLocaleTimeString();
+      const date = now.toLocaleDateString();
+      const dateTimeString = `${date} - ${time}`;
+      document.getElementById('date-time').innerText = dateTimeString;
+    }
+
+    // Fetch student profiles
+    function fetchProfiles() {
+      fetch(sheetUrl)
+        .then(response => {
+          if (!response.ok) throw new Error(`Network response was not ok: ${response.statusText}`);
+          return response.text();
+        })
+        .then(data => {
+          const rows = data.split('\n');
+          profilesDiv.innerHTML = ''; // Clear previous profiles
+          rows.forEach((row, index) => {
+            if (index === 0) return; // Skip header row
+            const cols = row.split('\t');
+            if (cols.length < 6) return;
+
+            const profileContainer = document.createElement('div');
+            profileContainer.classList.add('profile-container');
+            profileContainer.innerHTML = `
+              <h3>ID: ${cols[0]}</h3>
+              <p>Name: ${cols[1]}</p>
+              <p>Phone: ${cols[2]}</p>
+              <p>WhatsApp: ${cols[3]}</p>
+              <p><strong>Facebook:</strong> <a href="${cols[4]}" target="_blank">${cols[4]}</a></p>
+              <p><strong>LinkedIn:</strong> <a href="${cols[5]}" target="_blank">${cols[5]}</a></p>
+            `;
+            profilesDiv.appendChild(profileContainer);
+          });
+        })
+        .catch(error => console.error('Error fetching or processing data:', error));
+    }
+
+    // Initialize profiles and update date-time
+    updateDateTime();
+    fetchProfiles();
+    setInterval(updateDateTime, 60000); // Update every minute
+  </script>
+</body>
+</html>
