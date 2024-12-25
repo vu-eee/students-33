@@ -7,13 +7,11 @@
         <!-- Link to Manifest -->
         <link rel="manifest" href="manifest.json">
         
-        <!-- Font Awesome for Icons -->
-        <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
-
         <link rel="stylesheet" href="style.css">
         <style>
             .icon {
-                font-size: 24px;
+                width: 24px;
+                height: 24px;
                 margin-right: 10px;
                 vertical-align: middle;
                 cursor: pointer;
@@ -27,28 +25,8 @@
             }
 
             .contact-icons a {
+                color: inherit;
                 text-decoration: none;
-                transition: transform 0.2s;
-            }
-
-            .contact-icons a:hover {
-                transform: scale(1.2);
-            }
-
-            .contact-icons a .fa-phone {
-                color: #0f9d58; /* Green for phone */
-            }
-
-            .contact-icons a .fa-whatsapp {
-                color: #25d366; /* WhatsApp green */
-            }
-
-            .contact-icons a .fa-facebook {
-                color: #1877f2; /* Facebook blue */
-            }
-
-            .contact-icons a .fa-linkedin {
-                color: #0077b5; /* LinkedIn blue */
             }
         </style>
     </head>
@@ -111,16 +89,16 @@
                                 <p>Name: ${cols[1]}</p>
                                 <div class="contact-icons">
                                     <a href="tel:${cols[2]}" title="Call">
-                                        <i class="fas fa-phone icon"></i>
+                                        <img src="https://cdnjs.cloudflare.com/ajax/libs/simple-icons/8.9.0/phone.svg" alt="Phone Icon" class="icon">
                                     </a>
                                     <a href="https://wa.me/${cols[3]}" target="_blank" title="WhatsApp">
-                                        <i class="fab fa-whatsapp icon"></i>
-                                    </a>
-                                    <a href="${cols[4].trim()}" target="_blank" title="Facebook">
-                                        <i class="fab fa-facebook icon"></i>
+                                        <img src="https://cdnjs.cloudflare.com/ajax/libs/simple-icons/8.9.0/whatsapp.svg" alt="WhatsApp Icon" class="icon">
                                     </a>
                                     <a href="${cols[5].trim()}" target="_blank" title="LinkedIn">
-                                        <i class="fab fa-linkedin icon"></i>
+                                        <img src="https://cdnjs.cloudflare.com/ajax/libs/simple-icons/8.9.0/linkedin.svg" alt="LinkedIn Icon" class="icon">
+                                    </a>
+                                    <a href="${cols[4].trim()}" target="_blank" title="Facebook">
+                                        <img src="https://cdnjs.cloudflare.com/ajax/libs/simple-icons/8.9.0/facebook.svg" alt="Facebook Icon" class="icon">
                                     </a>
                                 </div>
                             `;
