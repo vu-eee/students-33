@@ -1,174 +1,118 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Student Profiles</title>
-  <style>
-    /* Reset */
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Student Profiles</title>
 
-    body {
-      font-family: Arial, sans-serif;
-      background-color: #222;
-      color: #fff;
-      display: flex;
-      flex-direction: column;
-      min-height: 100vh;
-    }
+        <!-- Link to Manifest -->
+        <link rel="manifest" href="manifest.json">
+        
+        <link rel="stylesheet" href="style.css">
+        <style>
+            .icon {
+                width: 24px;
+                height: 24px;
+                margin-right: 10px;
+                vertical-align: middle;
+                cursor: pointer;
+            }
 
-    .container {
-      width: 100%;
-      max-width: 375px;
-      margin: auto;
-      background-color: #222;
-      border-radius: 25px;
-      overflow: hidden;
-      flex: 1;
-      display: flex;
-      flex-direction: column;
-    }
+            .contact-icons {
+                display: flex;
+                gap: 15px;
+                align-items: center;
+                margin-top: 10px;
+            }
 
-    .header {
-      padding: 20px;
-      background-color: #333;
-      text-align: center;
-    }
+            .contact-icons a {
+                color: inherit;
+                text-decoration: none;
+            }
+        </style>
+    </head>
+    <body>
+        <div class="container">
+            <!-- Header -->
+            <div class="header">
+                <h1>Dept. of EEE</h1>
+                <h2>Student Profiles</h2>
+                <p id="date-time"></p>
+                <p id="last-synced"></p>
+                <button id="reloadButton">Reload Profiles</button>
+            </div>
 
-    .header h1, .header h2, .header p {
-      margin: 5px 0;
-    }
+            <!-- Main Content -->
+            <div class="main-content" id="profiles"></div>
 
-    .header h1 {
-      font-size: 20px;
-      font-weight: bold;
-    }
+            <!-- Footer -->
+            <div class="footer">
+                <p>Maintained by CR</p>
+            </div>
+        </div>
 
-    .header h2 {
-      font-size: 18px;
-      color: #ff0;
-    }
+        <script>
+            const profilesDiv = document.getElementById('profiles');
+            const reloadButton = document.getElementById('reloadButton');
 
-    .header p {
-      font-size: 14px;
-      color: #aaa;
-    }
+            const sheetUrl = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vQBQx8ya4m7Xa4nTDx4cdB_OLGuMyCGhwH4bNlVHQwfk30SY-dfolEMD_ei0pq-l227luK5-jxUWG59/pub?output=tsv';
 
-    .main-content {
-      padding: 20px;
-      overflow-y: auto;
-      flex: 1;
-    }
+            // Update date and time
+            function updateDateTime() {
+                const now = new Date();
+                const time = now.toLocaleTimeString();
+                const date = now.toLocaleDateString();
+                const dateTimeString = `${date} - ${time}`;
+                document.getElementById('date-time').innerText = dateTimeString;
+                document.getElementById('last-synced').innerText = `Last Synced: ${time}`;
+            }
 
-    .profile-container {
-      margin-bottom: 15px;
-      border-radius: 15px;
-      background-color: #333;
-      padding: 15px;
-      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
-    }
+            // Fetch and display student profiles
+            function fetchProfiles() {
+                fetch(sheetUrl)
+                    .then(response => {
+                        if (!response.ok) throw new Error(`Network response was not ok: ${response.statusText}`);
+                        return response.text();
+                    })
+                    .then(data => {
+                        const rows = data.split('\n');
+                        profilesDiv.innerHTML = ''; // Clear previous profiles
 
-    .profile-container h3 {
-      margin: 0;
-      font-size: 18px;
-      font-weight: bold;
-    }
+                        rows.forEach((row, index) => {
+                            if (index === 0) return; // Skip header row
+                            const cols = row.split('\t');
+                            if (cols.length < 6) return;
 
-    .profile-container p {
-      margin: 5px 0;
-      font-size: 14px;
-    }
+                            const profileContainer = document.createElement('div');
+                            profileContainer.classList.add('schedule-container', index % 2 === 0 ? 'dark' : 'yellow');
+                            profileContainer.innerHTML = `
+                                <h3>ID: ${cols[0]}</h3>
+                                <p>Name: ${cols[1]}</p>
+                                <div class="contact-icons">
+                                    <a href="tel:${cols[2]}" title="Call">
+                                        <img src="phone-icon.png" alt="Phone Icon" class="icon">
+                                    </a>
+                                    <a href="https://wa.me/${cols[3]}" target="_blank" title="WhatsApp">
+                                        <img src="whatsapp-icon.png" alt="WhatsApp Icon" class="icon">
+                                    </a>
+                                    <a href="${cols[5].trim()}" target="_blank" title="LinkedIn">
+                                        <img src="linkedin-icon.png" alt="LinkedIn Icon" class="icon">
+                                    </a>
+                                </div>
+                                <p><strong>Facebook:</strong> <a href="${cols[4].trim()}" target="_blank">${cols[4].trim().slice(0, 30)}...</a></p>
+                            `;
+                            profilesDiv.appendChild(profileContainer);
+                        });
+                    })
+                    .catch(error => console.error('Error fetching or processing data:', error));
+            }
 
-    .profile-container a {
-      color: #ff0;
-      text-decoration: none;
-    }
+            // Reload profiles on button click
+            reloadButton.addEventListener('click', fetchProfiles);
 
-    .profile-container a:hover {
-      color: #d1a100;
-    }
-
-    .footer {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      padding: 10px 0;
-      background-color: #111;
-      border-top: 2px solid #333;
-    }
-  </style>
-</head>
-<body>
-  <div class="container">
-    <!-- Header -->
-    <div class="header">
-      <h1>Dept. of EEE</h1>
-      <h2>Student Profiles</h2>
-      <p id="date-time"></p>
-    </div>
-
-    <!-- Main Content -->
-    <div class="main-content" id="profiles"></div>
-
-    <!-- Footer -->
-    <div class="footer">
-      <p>Maintaining by CR</p>
-    </div>
-  </div>
-
-  <script>
-    // URL of the Google Sheet in TSV format
-    const sheetUrl = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vQBQx8ya4m7Xa4nTDx4cdB_OLGuMyCGhwH4bNlVHQwfk30SY-dfolEMD_ei0pq-l227luK5-jxUWG59/pub?output=tsv';
-    const profilesDiv = document.getElementById('profiles');
-
-    // Update date and time
-    function updateDateTime() {
-      const now = new Date();
-      const time = now.toLocaleTimeString();
-      const date = now.toLocaleDateString();
-      const dateTimeString = `${date} - ${time}`;
-      document.getElementById('date-time').innerText = dateTimeString;
-    }
-
-    // Fetch student profiles
-    function fetchProfiles() {
-      fetch(sheetUrl)
-        .then(response => {
-          if (!response.ok) throw new Error(`Network response was not ok: ${response.statusText}`);
-          return response.text();
-        })
-        .then(data => {
-          const rows = data.split('\n');
-          profilesDiv.innerHTML = ''; // Clear previous profiles
-          rows.forEach((row, index) => {
-            if (index === 0) return; // Skip header row
-            const cols = row.split('\t');
-            if (cols.length < 6) return;
-
-            const profileContainer = document.createElement('div');
-            profileContainer.classList.add('profile-container');
-            profileContainer.innerHTML = `
-              <h3>ID: ${cols[0]}</h3>
-              <p>Name: ${cols[1]}</p>
-              <p>Phone: ${cols[2]}</p>
-              <p>WhatsApp: ${cols[3]}</p>
-              <p><strong>Facebook:</strong> <a href="${cols[4]}" target="_blank">${cols[4]}</a></p>
-              <p><strong>LinkedIn:</strong> <a href="${cols[5]}" target="_blank">${cols[5]}</a></p>
-            `;
-            profilesDiv.appendChild(profileContainer);
-          });
-        })
-        .catch(error => console.error('Error fetching or processing data:', error));
-    }
-
-    // Initialize profiles and update date-time
-    updateDateTime();
-    fetchProfiles();
-    setInterval(updateDateTime, 60000); // Update every minute
-  </script>
-</body>
+            // Initialize profiles and update date-time
+            updateDateTime();
+            fetchProfiles();
+            setInterval(updateDateTime, 60000); // Update every minute
+        </script>
+    </body>
 </html>
