@@ -55,8 +55,6 @@
             <div class="header">
                 <h1>Dept. of EEE</h1>
                 <h2>Student Profiles 33rd Batch</h2>
-<!--                 <p id="date-time"></p>
-                <p id="last-synced"></p> -->
                 <p>Unofficial Student Contact Database</p>
                 <p>If any data is wrong, please contact with CR</p>
                 <a href="https://vu-eee.github.io/library" target="_blank">
@@ -77,16 +75,6 @@
             const profilesDiv = document.getElementById('profiles');
 
             const sheetUrl = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vQBQx8ya4m7Xa4nTDx4cdB_OLGuMyCGhwH4bNlVHQwfk30SY-dfolEMD_ei0pq-l227luK5-jxUWG59/pub?output=tsv';
-
-            // Update date and time
-            function updateDateTime() {
-                const now = new Date();
-                const time = now.toLocaleTimeString();
-                const date = now.toLocaleDateString();
-                const dateTimeString = `${date} - ${time}`;
-                document.getElementById('date-time').innerText = dateTimeString;
-                document.getElementById('last-synced').innerText = `Last Synced: ${time}`;
-            }
 
             // Fetch and display student profiles
             function fetchProfiles() {
@@ -110,23 +98,22 @@
                                 <h3>ID: ${cols[0]}</h3>
                                 <p>Name: ${cols[1]}</p>
                                 <div class="contact-icons">
-    <a href="tel:${cols[2]}" title="Call">
-        <img src="https://www.svgrepo.com/download/533283/phone-call.svg" alt="Phone Icon" class="icon">
-    </a>
-    <a href="https://wa.me/${cols[3]}" target="_blank" title="WhatsApp">
-        <img src="https://cdnjs.cloudflare.com/ajax/libs/simple-icons/8.9.0/whatsapp.svg" alt="WhatsApp Icon" class="icon">
-    </a>
-    <a href="${cols[5].trim()}" target="_blank" title="LinkedIn">
-        <img src="https://cdnjs.cloudflare.com/ajax/libs/simple-icons/8.9.0/linkedin.svg" alt="LinkedIn Icon" class="icon">
-    </a>
-    <a href="${cols[4].trim()}" target="_blank" title="Facebook">
-        <img src="https://cdnjs.cloudflare.com/ajax/libs/simple-icons/8.9.0/facebook.svg" alt="Facebook Icon" class="icon">
-    </a>
-    <a href="mailto:${cols[6]}" title="Email">
-        <img src="https://cdnjs.cloudflare.com/ajax/libs/simple-icons/8.9.0/gmail.svg" alt="Email Icon" class="icon">
-    </a>
-</div>
-
+                                    <a href="tel:${cols[2]}" title="Call">
+                                        <img src="https://www.svgrepo.com/download/533283/phone-call.svg" alt="Phone Icon" class="icon">
+                                    </a>
+                                    <a href="https://wa.me/${cols[3]}" target="_blank" title="WhatsApp">
+                                        <img src="https://cdnjs.cloudflare.com/ajax/libs/simple-icons/8.9.0/whatsapp.svg" alt="WhatsApp Icon" class="icon">
+                                    </a>
+                                    <a href="${cols[5].trim()}" target="_blank" title="LinkedIn">
+                                        <img src="https://cdnjs.cloudflare.com/ajax/libs/simple-icons/8.9.0/linkedin.svg" alt="LinkedIn Icon" class="icon">
+                                    </a>
+                                    <a href="${cols[4].trim()}" target="_blank" title="Facebook">
+                                        <img src="https://cdnjs.cloudflare.com/ajax/libs/simple-icons/8.9.0/facebook.svg" alt="Facebook Icon" class="icon">
+                                    </a>
+                                    <a href="mailto:${cols[6]}" title="Email">
+                                        <img src="https://cdnjs.cloudflare.com/ajax/libs/simple-icons/8.9.0/gmail.svg" alt="Email Icon" class="icon">
+                                    </a>
+                                </div>
                             `;
                             profilesDiv.appendChild(profileContainer);
                         });
@@ -134,10 +121,8 @@
                     .catch(error => console.error('Error fetching or processing data:', error));
             }
 
-            // Initialize profiles and update date-time
-            updateDateTime();
+            // Initialize profiles
             fetchProfiles();
-            setInterval(updateDateTime, 60000); // Update every minute
         </script>
     </body>
 </html>
