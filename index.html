@@ -15,7 +15,6 @@
                 margin-right: 10px;
                 vertical-align: middle;
                 cursor: pointer;
-                fill: black; /* Set icon color to black */
             }
 
             .contact-icons {
@@ -29,16 +28,6 @@
                 color: inherit;
                 text-decoration: none;
             }
-
-            /* Apply yellow background for even-numbered profiles */
-            .schedule-container.dark {
-                background-color: #f4f4f4; /* Default background for odd profiles */
-            }
-
-            .schedule-container.yellow {
-                background-color: #ffff99; /* Yellow background for even profiles */
-            }
-
         </style>
     </head>
     <body>
@@ -94,13 +83,13 @@
                             if (cols.length < 6) return;
 
                             const profileContainer = document.createElement('div');
-                            profileContainer.classList.add('schedule-container', index % 2 === 0 ? 'yellow' : 'dark');
+                            profileContainer.classList.add('schedule-container', index % 2 === 0 ? 'dark' : 'yellow');
                             profileContainer.innerHTML = `
                                 <h3>ID: ${cols[0]}</h3>
                                 <p>Name: ${cols[1]}</p>
                                 <div class="contact-icons">
                                     <a href="tel:${cols[2]}" title="Call">
-                                        <img src="https://cdnjs.cloudflare.com/ajax/libs/simple-icons/8.9.0/phone-call.svg" alt="Phone Icon" class="icon">
+                                        <img src="https://cdnjs.cloudflare.com/ajax/libs/simple-icons/8.9.0/phone.svg" alt="Phone Icon" class="icon">
                                     </a>
                                     <a href="https://wa.me/${cols[3]}" target="_blank" title="WhatsApp">
                                         <img src="https://cdnjs.cloudflare.com/ajax/libs/simple-icons/8.9.0/whatsapp.svg" alt="WhatsApp Icon" class="icon">
@@ -129,3 +118,4 @@
         </script>
     </body>
 </html>
+
