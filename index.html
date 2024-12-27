@@ -54,11 +54,12 @@
             <!-- Header -->
             <div class="header">
                 <h1>Dept. of EEE</h1>
-                <h2>Student Profiles 33 Batch</h2>
+                <h2>Student Profiles</h2>
                 <p id="date-time"></p>
                 <p id="last-synced"></p>
-<!--                 <button id="reloadButton">Reload Profiles</button> -->
-                <button id="">Reload Profiles</button>
+                <a href="https://vu-eee.github.io/library" target="_blank">
+                    <button id="reloadButton">Online Library</button>
+                </a>
             </div>
 
             <!-- Main Content -->
@@ -72,7 +73,6 @@
 
         <script>
             const profilesDiv = document.getElementById('profiles');
-            const reloadButton = document.getElementById('reloadButton');
 
             const sheetUrl = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vQBQx8ya4m7Xa4nTDx4cdB_OLGuMyCGhwH4bNlVHQwfk30SY-dfolEMD_ei0pq-l227luK5-jxUWG59/pub?output=tsv';
 
@@ -127,9 +127,6 @@
                     })
                     .catch(error => console.error('Error fetching or processing data:', error));
             }
-
-            // Reload profiles on button click
-            reloadButton.addEventListener('click', fetchProfiles);
 
             // Initialize profiles and update date-time
             updateDateTime();
