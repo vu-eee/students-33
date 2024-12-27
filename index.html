@@ -28,6 +28,25 @@
                 color: inherit;
                 text-decoration: none;
             }
+
+            .schedule-container.dark .icon {
+                filter: invert(1); /* Make icons white for dark background */
+            }
+
+            .schedule-container.yellow .icon {
+                filter: none; /* Keep icons black for yellow background */
+            }
+
+            /* Background colors for the cards */
+            .schedule-container.dark {
+                background-color: black;
+                color: white;
+            }
+
+            .schedule-container.yellow {
+                background-color: #ffff99; /* Light yellow */
+                color: black;
+            }
         </style>
     </head>
     <body>
@@ -89,7 +108,7 @@
                                 <p>Name: ${cols[1]}</p>
                                 <div class="contact-icons">
                                     <a href="tel:${cols[2]}" title="Call">
-                                        <img src="https://cdnjs.cloudflare.com/ajax/libs/simple-icons/8.9.0/phone.svg" alt="Phone Icon" class="icon">
+                                        <img src="https://www.svgrepo.com/download/533283/phone-call.svg" alt="Phone Icon" class="icon">
                                     </a>
                                     <a href="https://wa.me/${cols[3]}" target="_blank" title="WhatsApp">
                                         <img src="https://cdnjs.cloudflare.com/ajax/libs/simple-icons/8.9.0/whatsapp.svg" alt="WhatsApp Icon" class="icon">
@@ -118,4 +137,3 @@
         </script>
     </body>
 </html>
-
